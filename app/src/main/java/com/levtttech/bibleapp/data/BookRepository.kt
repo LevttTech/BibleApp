@@ -1,23 +1,29 @@
 package com.levtttech.bibleapp.data
 
-import com.levtttech.bibleapp.data.net.BookCloudMapper
+import com.levtttech.bibleapp.data.cache.BooksCacheDataSource
+import com.levtttech.bibleapp.data.cache.BooksCacheMapper
 
 interface BookRepository {
     suspend fun fetchBooks(): BooksData
 
     class Base(
         private val cloudDataSource: BooksCloudDataSource,
-        private val cloudMapper: BookCloudMapper
+        private val cacheDataSource: BooksCacheDataSource,
+        private val cloudMapper: BooksCloudMapper,
+        private val cacheMapper: BooksCacheMapper,
     ) : BookRepository {
-        override suspend fun fetchBooks(): BooksData {
-            return try {
-                val booksCloudList = cloudDataSource.fetchBooks()
-                BooksData.Success(booksCloudList.map {
-                    it.map(cloudMapper)
-                })
-            } catch (e: Exception) {
-                BooksData.Fail(e)
+        override suspend fun fetchBooks() = try {
+            val booksCacheList = cacheDataSource.fetchBooks()
+            if (booksCacheList.isEmpty()) {
+                val booksList = cloudMapper.map(cloudDataSource.fetchBooks())
+                cacheDataSource.saveBooks(booksList)
+                BooksData.Success(booksList)
+            } else {
+                BooksData.Success(cacheMapper.map(booksCacheList))
             }
+
+        } catch (e: Exception) {
+            BooksData.Fail(e)
         }
     }
 }
