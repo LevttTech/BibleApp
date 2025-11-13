@@ -1,6 +1,10 @@
 package com.levtttech.bibleapp.core
 
 import android.app.Application
+import com.levtttech.bibleapp.presentation.BaseBooksDomainToUiMapper
+import com.levtttech.bibleapp.presentation.BooksCommunication
+import com.levtttech.bibleapp.presentation.MainViewModel
+import com.levtttech.bibleapp.presentation.ResourceProvider
 import androidx.room.Room
 import com.levtttech.bibleapp.data.BookRepository
 import com.levtttech.bibleapp.data.BooksCloudDataSource
@@ -13,12 +17,11 @@ import com.levtttech.bibleapp.data.cache.RoomProvider
 import com.levtttech.bibleapp.data.net.BookCloudMapper
 import com.levtttech.bibleapp.data.net.BookService
 import retrofit2.Retrofit
-import com.levtttech.bibleapp.data.BooksRepository
 import com.levtttech.bibleapp.domain.BaseBookDataToDomainMapper
 import com.levtttech.bibleapp.domain.BooksInteractor
 
 class BibleApp : Application() {
-
+    lateinit var mainViewModel: MainViewModel
     override fun onCreate() {
         super.onCreate()
 
@@ -37,7 +40,12 @@ class BibleApp : Application() {
             BooksCloudMapper.Base(BookCloudMapper.Base()),
             BooksCacheMapper.Base(BookDbMapper.Base())
         )
-        val booksInteractor = BooksInteractor.Base(booksRepository, BaseBookDataToDomainMapper())
+        val booksInteractor = BooksInteractor.Base(repository, BaseBookDataToDomainMapper())
+        mainViewModel = MainViewModel(
+            booksInteractor, BaseBooksDomainToUiMapper(
+                BooksCommunication.Base(), ResourceProvider.Base(this)
+            ), BooksCommunication.Base()
+        )
     }
 
     private companion object {
