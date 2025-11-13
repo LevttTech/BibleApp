@@ -1,6 +1,9 @@
 package com.levtttech.bibleapp.presentation
 
+import com.levtttech.bibleapp.R
 import com.levtttech.bibleapp.core.Abstract
+import com.levtttech.bibleapp.core.Book
+import com.levtttech.bibleapp.domain.ErrorType
 
 sealed class BooksUi : Abstract.Object<Unit, Abstract.Mapper.Empty>() {
     class Success(

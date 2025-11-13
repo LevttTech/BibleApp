@@ -6,7 +6,7 @@ import com.levtttech.bibleapp.presentation.BooksCommunication
 import com.levtttech.bibleapp.presentation.MainViewModel
 import com.levtttech.bibleapp.presentation.ResourceProvider
 import androidx.room.Room
-import com.levtttech.bibleapp.data.BookRepository
+import com.levtttech.bibleapp.data.BooksRepository
 import com.levtttech.bibleapp.data.BooksCloudDataSource
 import com.levtttech.bibleapp.data.BooksCloudMapper
 import com.levtttech.bibleapp.data.cache.BookDbMapper
@@ -34,7 +34,7 @@ class BibleApp : Application() {
         ).build()
         val cloudDataSource = BooksCloudDataSource.Base(service)
         val cacheDataSource = BooksCacheDataSource.Base(RoomProvider.Base(database))
-        val repository = BookRepository.Base(
+        val repository = BooksRepository.Base(
             cloudDataSource,
             cacheDataSource,
             BooksCloudMapper.Base(BookCloudMapper.Base()),

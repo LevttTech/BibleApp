@@ -3,7 +3,7 @@ package com.levtttech.bibleapp.data
 import com.levtttech.bibleapp.data.cache.BooksCacheDataSource
 import com.levtttech.bibleapp.data.cache.BooksCacheMapper
 
-interface BookRepository {
+interface BooksRepository {
     suspend fun fetchBooks(): BooksData
 
     class Base(
@@ -11,7 +11,7 @@ interface BookRepository {
         private val cacheDataSource: BooksCacheDataSource,
         private val cloudMapper: BooksCloudMapper,
         private val cacheMapper: BooksCacheMapper,
-    ) : BookRepository {
+    ) : BooksRepository {
         override suspend fun fetchBooks() = try {
             val booksCacheList = cacheDataSource.fetchBooks()
             if (booksCacheList.isEmpty()) {
