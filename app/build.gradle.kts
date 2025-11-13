@@ -36,7 +36,7 @@ android {
 }
 
 dependencies {
-
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0") // Use the latest stable version
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
