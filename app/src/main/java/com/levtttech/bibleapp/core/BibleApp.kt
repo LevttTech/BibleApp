@@ -13,6 +13,9 @@ import com.levtttech.bibleapp.data.cache.RoomProvider
 import com.levtttech.bibleapp.data.net.BookCloudMapper
 import com.levtttech.bibleapp.data.net.BookService
 import retrofit2.Retrofit
+import com.levtttech.bibleapp.data.BooksRepository
+import com.levtttech.bibleapp.domain.BaseBookDataToDomainMapper
+import com.levtttech.bibleapp.domain.BooksInteractor
 
 class BibleApp : Application() {
 
@@ -34,7 +37,7 @@ class BibleApp : Application() {
             BooksCloudMapper.Base(BookCloudMapper.Base()),
             BooksCacheMapper.Base(BookDbMapper.Base())
         )
-
+        val booksInteractor = BooksInteractor.Base(booksRepository, BaseBookDataToDomainMapper())
     }
 
     private companion object {
