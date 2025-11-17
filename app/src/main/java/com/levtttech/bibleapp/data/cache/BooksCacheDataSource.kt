@@ -10,7 +10,7 @@ interface BooksCacheDataSource {
     class Base(private val roomProvider: RoomProvider) : BooksCacheDataSource {
         override suspend fun fetchBooks(): List<BookDb> = roomProvider.provide().fetchBooks()
         override suspend fun saveBooks(books: List<Book>) {
-            roomProvider.provide().fetchBooks()
+            roomProvider.provide().saveBooks(books.map { BookDb(it.id, it.name) })
         }
     }
 }

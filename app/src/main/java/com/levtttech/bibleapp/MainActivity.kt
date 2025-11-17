@@ -1,6 +1,7 @@
 package com.levtttech.bibleapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -21,7 +22,6 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-
         val adapter = BibleAdapter()
         recyclerView.adapter = adapter
         viewModel.observer(this) { books ->

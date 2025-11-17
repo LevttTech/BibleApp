@@ -6,13 +6,13 @@ import com.levtttech.bibleapp.presentation.BooksUi
 import java.net.HttpRetryException
 import java.net.UnknownHostException
 
-sealed class BookDomain : Abstract.Object<BooksUi, BooksDomainToUiMapper>() {
+sealed class BooksDomain : Abstract.Object<BooksUi, BooksDomainToUiMapper>() {
 
-    class Success(private val books: List<Book>) : BookDomain() {
+    class Success(private val books: List<Book>) : BooksDomain() {
         override fun map(mapper: BooksDomainToUiMapper): BooksUi = mapper.map(books)
     }
 
-    class Fail(private val e: Exception) : BookDomain() {
+    class Fail(private val e: Exception) : BooksDomain() {
         override fun map(mapper: BooksDomainToUiMapper): BooksUi = mapper.map(
             when (e) {
                 is UnknownHostException -> ErrorType.NO_CONNECTION

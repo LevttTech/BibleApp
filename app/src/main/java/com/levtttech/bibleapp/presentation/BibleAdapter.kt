@@ -3,6 +3,7 @@ package com.levtttech.bibleapp.presentation
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.levtttech.bibleapp.R
 import com.levtttech.bibleapp.core.Book
@@ -17,9 +18,7 @@ class BibleAdapter : RecyclerView.Adapter<BibleAdapter.BibbleViewHolder>() {
         notifyDataSetChanged()
     }
 
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getItemCount(): Int = books.size
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -43,7 +42,8 @@ class BibleAdapter : RecyclerView.Adapter<BibleAdapter.BibbleViewHolder>() {
     inner class BibbleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(book: Book) {
-
+            val textView = itemView.findViewById<TextView>(R.id.textView)
+            textView.text = book.name
         }
     }
 }

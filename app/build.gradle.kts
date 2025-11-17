@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.devtools.ksp") version "1.9.0-1.0.13"
+    id("com.google.devtools.ksp") version "2.2.20-2.0.4"
 }
 
 android {
@@ -37,7 +37,8 @@ android {
 }
 
 dependencies {
-    val room_version = "2.6.1"
+    testImplementation(libs.junit.junit)
+    val room_version = "2.7.0"
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
     implementation("com.squareup.retrofit2:retrofit:3.0.0")

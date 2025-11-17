@@ -2,15 +2,15 @@ package com.levtttech.bibleapp.data
 
 import com.levtttech.bibleapp.core.Abstract
 import com.levtttech.bibleapp.core.Book
-import com.levtttech.bibleapp.domain.BookDomain
+import com.levtttech.bibleapp.domain.BooksDomain
 
 sealed class BooksData : Abstract.Object<BooksDomain, BooksDataToDomainMapper>() {
 
-    class Success(private val books: List<Book>) : BooksData() {
-        override fun map(mapper: BooksDataToDomainMapper): BookDomain = mapper.map(books)
+    data class Success(private val books: List<Book>) : BooksData() {
+        override fun map(mapper: BooksDataToDomainMapper): BooksDomain = mapper.map(books)
     }
 
-    class Fail(private val e: Exception) : BooksData() {
-        override fun map(mapper: BooksDataToDomainMapper): BookDomain = mapper.map(e)
+    data class Fail(private val e: Exception) : BooksData() {
+        override fun map(mapper: BooksDataToDomainMapper): BooksDomain = mapper.map(e)
     }
 }

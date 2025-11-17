@@ -19,13 +19,16 @@ import com.levtttech.bibleapp.data.net.BookService
 import retrofit2.Retrofit
 import com.levtttech.bibleapp.domain.BaseBookDataToDomainMapper
 import com.levtttech.bibleapp.domain.BooksInteractor
+import retrofit2.converter.gson.GsonConverterFactory
 
 class BibleApp : Application() {
     lateinit var mainViewModel: MainViewModel
     override fun onCreate() {
         super.onCreate()
 
-        val retrofit = Retrofit.Builder().baseUrl(BASE_URL).build()
+        val retrofit = Retrofit.Builder().baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
         val service = retrofit.create(BookService::class.java)
 
@@ -41,10 +44,11 @@ class BibleApp : Application() {
             BooksCacheMapper.Base(BookDbMapper.Base())
         )
         val booksInteractor = BooksInteractor.Base(repository, BaseBookDataToDomainMapper())
+        val communication = BooksCommunication.Base()
         mainViewModel = MainViewModel(
             booksInteractor, BaseBooksDomainToUiMapper(
-                BooksCommunication.Base(), ResourceProvider.Base(this)
-            ), BooksCommunication.Base()
+                communication, ResourceProvider.Base(this)
+            ), communication
         )
     }
 

@@ -34,7 +34,7 @@ interface BooksCommunication {
             owner: LifecycleOwner,
             observer: Observer<String>,
         ) {
-            observeFail(owner, observer)
+            failLiveData.observe(owner, observer)
         }
     }
 }
