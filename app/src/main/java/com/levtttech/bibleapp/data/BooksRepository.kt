@@ -1,10 +1,7 @@
 package com.levtttech.bibleapp.data
 
-import android.util.Log
 import com.levtttech.bibleapp.data.cache.BooksCacheDataSource
 import com.levtttech.bibleapp.data.cache.BooksCacheMapper
-import kotlinx.coroutines.delay
-import java.net.HttpRetryException
 
 interface BooksRepository {
     suspend fun fetchBooks(): BooksData

@@ -1,6 +1,5 @@
 package com.levtttech.bibleapp.presentation
 
-import android.widget.TextView
 import com.levtttech.bibleapp.core.Abstract
 
 sealed class BookUi : Abstract.Object<Unit, BookUi.Mapper>() {
