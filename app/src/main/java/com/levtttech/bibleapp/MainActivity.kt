@@ -9,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.levtttech.bibleapp.core.BibleApp
 import com.levtttech.bibleapp.presentation.BibleAdapter
+import com.levtttech.bibleapp.presentation.Retry
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +23,11 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val adapter = BibleAdapter()
+        val adapter = BibleAdapter(object : Retry {
+            override fun clickButton() {
+                viewModel.fetchBooks()
+            }
+        })
         recyclerView.adapter = adapter
         viewModel.observer(this) { books ->
             adapter.update(books)

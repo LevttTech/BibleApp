@@ -9,16 +9,18 @@ import androidx.room.Room
 import com.levtttech.bibleapp.data.BooksRepository
 import com.levtttech.bibleapp.data.BooksCloudDataSource
 import com.levtttech.bibleapp.data.BooksCloudMapper
-import com.levtttech.bibleapp.data.cache.BookDbMapper
+import com.levtttech.bibleapp.data.ToBookDataMapper
 import com.levtttech.bibleapp.data.cache.BooksCacheDataSource
 import com.levtttech.bibleapp.data.cache.BooksCacheMapper
 import com.levtttech.bibleapp.data.cache.BooksDatabase
 import com.levtttech.bibleapp.data.cache.RoomProvider
-import com.levtttech.bibleapp.data.net.BookCloudMapper
+import com.levtttech.bibleapp.data.cache.ToDbMapper
 import com.levtttech.bibleapp.data.net.BookService
 import retrofit2.Retrofit
 import com.levtttech.bibleapp.domain.BaseBookDataToDomainMapper
+import com.levtttech.bibleapp.domain.BaseBookDomainMapper
 import com.levtttech.bibleapp.domain.BooksInteractor
+import com.levtttech.bibleapp.presentation.BaseBookDomainToUiMapper
 import retrofit2.converter.gson.GsonConverterFactory
 
 class BibleApp : Application() {
@@ -35,19 +37,21 @@ class BibleApp : Application() {
         val database = Room.databaseBuilder(
             applicationContext, BooksDatabase::class.java, "books-database"
         ).build()
+        val roomProvider = RoomProvider.Base(database)
         val cloudDataSource = BooksCloudDataSource.Base(service)
-        val cacheDataSource = BooksCacheDataSource.Base(RoomProvider.Base(database))
+        val cacheDataSource = BooksCacheDataSource.Base(roomProvider, ToDbMapper.Base())
         val repository = BooksRepository.Base(
             cloudDataSource,
             cacheDataSource,
-            BooksCloudMapper.Base(BookCloudMapper.Base()),
-            BooksCacheMapper.Base(BookDbMapper.Base())
+            BooksCloudMapper.Base(ToBookDataMapper.Base()),
+            BooksCacheMapper.Base(ToBookDataMapper.Base())
         )
-        val booksInteractor = BooksInteractor.Base(repository, BaseBookDataToDomainMapper())
+        val booksInteractor = BooksInteractor.Base(repository, BaseBookDataToDomainMapper(
+            BaseBookDomainMapper()))
         val communication = BooksCommunication.Base()
         mainViewModel = MainViewModel(
-            booksInteractor, BaseBooksDomainToUiMapper(
-                communication, ResourceProvider.Base(this)
+            booksInteractor, BaseBooksDomainToUiMapper(ResourceProvider.Base(this),
+                BaseBookDomainToUiMapper()
             ), communication
         )
     }

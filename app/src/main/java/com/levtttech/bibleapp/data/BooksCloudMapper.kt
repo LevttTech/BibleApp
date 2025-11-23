@@ -1,17 +1,25 @@
 package com.levtttech.bibleapp.data
 
 import com.levtttech.bibleapp.core.Abstract
-import com.levtttech.bibleapp.core.Book
-import com.levtttech.bibleapp.data.net.BookCloud
-import com.levtttech.bibleapp.data.net.BookCloudMapper
 
 interface BooksCloudMapper : Abstract.Mapper {
 
-    fun map(cloudList: List<BookCloud>): List<Book>
+    fun map(cloudList: List<Abstract.Object<BookData, ToBookDataMapper>>): List<BookData>
 
-    class Base(private val bookMapper: BookCloudMapper) : BooksCloudMapper {
-        override fun map(cloudList: List<BookCloud>): List<Book> {
+    class Base(private val bookMapper: ToBookDataMapper) : BooksCloudMapper {
+        override fun map(cloudList: List<Abstract.Object<BookData, ToBookDataMapper>>): List<BookData> {
             return cloudList.map { it.map(bookMapper) }
         }
+    }
+}
+
+interface ToBookDataMapper : Abstract.Mapper {
+    fun map(id: Int, name: String): BookData
+
+    class Base : ToBookDataMapper {
+        override fun map(
+            id: Int,
+            name: String,
+        ): BookData = BookData(id, name)
     }
 }
