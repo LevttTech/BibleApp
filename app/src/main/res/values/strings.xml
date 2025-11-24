@@ -4,4 +4,6 @@
     <string name="service_unavailable_message">Нет ответа от сервера</string>
     <string name="generic_error_message">Ошибка в generic</string>
     <string name="try_again">Try again</string>
+    <string name="old_testament">Old Testament</string>
+    <string name="new_testament">New Testament</string>
 </resources>

@@ -4,9 +4,7 @@ import com.levtttech.bibleapp.data.BooksDataToDomainMapper
 import com.levtttech.bibleapp.data.BooksRepository
 
 interface BooksInteractor {
-
     suspend fun fetchBooks(): BooksDomain
-
 
     class Base(
         private val bookRepository: BooksRepository,

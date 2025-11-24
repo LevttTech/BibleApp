@@ -11,6 +11,7 @@ import com.levtttech.bibleapp.data.ToBookDataMapper
 data class BookDb(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "testament") val testament: String
 ) : Abstract.Object<BookData, ToBookDataMapper>() {
-    override fun map(mapper: ToBookDataMapper): BookData = mapper.map(id, name)
+    override fun map(mapper: ToBookDataMapper): BookData = mapper.map(id, name, testament)
 }

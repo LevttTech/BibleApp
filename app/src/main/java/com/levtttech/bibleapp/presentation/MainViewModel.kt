@@ -15,22 +15,6 @@ class MainViewModel(
     private val mapper: BooksDomainToUiMapper,
     private val communication: BooksCommunication,
 ) : ViewModel() {
-    //    fun fetchBooks() {
-//        val handlerThread = HandlerThread("BooksFetcherThread")
-//        handlerThread.start()
-//        val backgroundHandler = Handler(handlerThread.looper)
-//
-//        backgroundHandler.post {
-//            val books: BooksDomain = BooksDomain.Success(listOf(Book(1,"HELLO")))
-//            mainHandler.post {
-//                val booksUi = books.map(mapper)
-//                Log.d("ViewModel", "IN mainHandler=${Thread.currentThread().name}")
-//                booksUi.map(Abstract.Mapper.Empty())
-//            }
-//
-//            handlerThread.quitSafely()
-//        }
-//    }
     fun fetchBooks() {
         communication.map(listOf(BookUi.Progress))
         viewModelScope.launch(Dispatchers.IO) {

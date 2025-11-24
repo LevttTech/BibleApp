@@ -20,6 +20,7 @@ import retrofit2.Retrofit
 import com.levtttech.bibleapp.domain.BaseBookDataToDomainMapper
 import com.levtttech.bibleapp.domain.BaseBookDomainMapper
 import com.levtttech.bibleapp.domain.BooksInteractor
+import com.levtttech.bibleapp.domain.TestamentTypeMapper
 import com.levtttech.bibleapp.presentation.BaseBookDomainToUiMapper
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -36,7 +37,7 @@ class BibleApp : Application() {
 
         val database = Room.databaseBuilder(
             applicationContext, BooksDatabase::class.java, "books-database"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
         val roomProvider = RoomProvider.Base(database)
         val cloudDataSource = BooksCloudDataSource.Base(service)
         val cacheDataSource = BooksCacheDataSource.Base(roomProvider, ToDbMapper.Base())
@@ -46,12 +47,13 @@ class BibleApp : Application() {
             BooksCloudMapper.Base(ToBookDataMapper.Base()),
             BooksCacheMapper.Base(ToBookDataMapper.Base())
         )
+        val resourceProvider = ResourceProvider.Base(this)
         val booksInteractor = BooksInteractor.Base(repository, BaseBookDataToDomainMapper(
-            BaseBookDomainMapper()))
+            BaseBookDomainMapper(), TestamentTypeMapper.Base()))
         val communication = BooksCommunication.Base()
         mainViewModel = MainViewModel(
-            booksInteractor, BaseBooksDomainToUiMapper(ResourceProvider.Base(this),
-                BaseBookDomainToUiMapper()
+            booksInteractor, BaseBooksDomainToUiMapper(resourceProvider,
+                BaseBookDomainToUiMapper(resourceProvider)
             ), communication
         )
     }
