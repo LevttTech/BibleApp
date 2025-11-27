@@ -3,6 +3,7 @@ package com.levtttech.bibleapp.data
 import com.levtttech.bibleapp.data.cache.BookDb
 import com.levtttech.bibleapp.data.cache.BooksCacheDataSource
 import com.levtttech.bibleapp.data.cache.BooksCacheMapper
+import com.levtttech.bibleapp.data.cache.ToDbMapper
 import com.levtttech.bibleapp.data.net.BookCloud
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -17,15 +18,15 @@ class BooksRepositorySaveBooksTest : BooksRepositoryTestBase() {
         val repository = BooksRepository.Base(
             cloudDataSource = testCloudDataSource,
             cacheDataSource = testCacheDataSource,
-            cloudMapper = BooksCloudMapper.Base(TestBookCloudMapper()),
-            cacheMapper = BooksCacheMapper.Base(TestToBookMapper())
+            cloudMapper = BooksCloudMapper.Base(ToBookDataMapperTest()),
+            cacheMapper = BooksCacheMapper.Base(ToBookDataMapperTest())
         )
 
         val actual = repository.fetchBooks()
         val expected = BooksData.Success(listOf(
-            Book(1,"book1"),
-            Book(2,"book2"),
-            Book(3, "book3")
+            BookData(1, "book1","ot"),
+            BookData(2, "book2","ot"),
+            BookData(3, "book3","nt")
         ))
 
         assertEquals(expected,actual)
@@ -33,9 +34,9 @@ class BooksRepositorySaveBooksTest : BooksRepositoryTestBase() {
         val actualCache = repository.fetchBooks()
         val expectedCache = BooksData.Success(
             listOf(
-                Book(1,"book1 db"),
-                Book(2,"book2 db"),
-                Book(3,"book3 db")
+                BookData(1, "book1 db","ot"),
+                BookData(2, "book2 db","ot"),
+                BookData(3, "book3 db","nt")
             )
         )
 
@@ -48,9 +49,9 @@ class BooksRepositorySaveBooksTest : BooksRepositoryTestBase() {
           return list
         }
 
-        override suspend fun saveBooks(books: List<Book>) {
+        override suspend fun saveBooks(books: List<BookData>) {
             books.map { book ->
-                list.add(BookDb(book.id, "${book.name} db"))
+                list.add(book.mapToDb(Mapper()))
             }
         }
     }
@@ -59,11 +60,20 @@ class BooksRepositorySaveBooksTest : BooksRepositoryTestBase() {
         BooksCloudDataSource {
         override suspend fun fetchBooks(): List<BookCloud> {
             return listOf(
-                    BookCloud(1, "book1"),
-                    BookCloud(2, "book2"),
-                    BookCloud(3, "book3")
+                    BookCloud(1, "book1","ot"),
+                    BookCloud(2, "book2","ot"),
+                    BookCloud(3, "book3","nt")
                 )
         }
     }
 
+    private inner class Mapper : ToDbMapper {
+        override fun map(
+            id: Int,
+            name: String,
+            testament: String,
+        ): BookDb = BookDb(id, "$name db",testament)
+    }
+
 }
+

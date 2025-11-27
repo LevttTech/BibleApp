@@ -38,6 +38,7 @@ android {
 
 dependencies {
     testImplementation(libs.junit.junit)
+    testImplementation(libs.junit.junit)
     val room_version = "2.7.0"
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")

@@ -1,6 +1,7 @@
 package com.levtttech.bibleapp.domain
 
 import com.levtttech.bibleapp.core.Abstract
+import com.levtttech.bibleapp.data.BookData
 import com.levtttech.bibleapp.presentation.BooksUi
 
 interface BooksDomainToUiMapper : Abstract.Mapper {

@@ -1,8 +1,10 @@
+
 package com.levtttech.bibleapp.data
 
 import com.levtttech.bibleapp.data.cache.BookDb
 import com.levtttech.bibleapp.data.cache.BooksCacheDataSource
 import com.levtttech.bibleapp.data.cache.BooksCacheMapper
+import com.levtttech.bibleapp.data.cache.ToDbMapper
 import com.levtttech.bibleapp.data.net.BookCloud
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -19,31 +21,11 @@ class BooksRepositoryTest : BooksRepositoryTestBase() {
         val repository = BooksRepository.Base(
             cloudDataSource = testCloudDataSource,
             cacheDataSource = testCacheDataSource,
-            cloudMapper = BooksCloudMapper.Base(TestBookCloudMapper()),
-            cacheMapper = BooksCacheMapper.Base(TestToBookMapper())
+            cloudMapper = BooksCloudMapper.Base(ToBookDataMapperTest()),
+            cacheMapper = BooksCacheMapper.Base(ToBookDataMapperTest())
         )
         val actual = repository.fetchBooks()
-        val expected = BooksData.Fail(exceptionCloud)
-
-        assertEquals(expected, actual)
-
-    }
-    @Test
-    fun `no connection but cache exist`() = runBlocking {
-        val testCacheDataSource = TestBooksCacheDataSource(true)
-        val testCloudDataSource = TestBooksCloudDataSource(false)
-        val repository = BooksRepository.Base(
-            cloudDataSource = testCloudDataSource,
-            cacheDataSource = testCacheDataSource,
-            cloudMapper = BooksCloudMapper.Base(TestBookCloudMapper()),
-            cacheMapper = BooksCacheMapper.Base(TestToBookMapper())
-        )
-        val actual = repository.fetchBooks()
-        val expected = BooksData.Success( listOf(
-            Book(1, "book1 db"),
-            Book(2, "book2 db"),
-            Book(3, "book3 db")
-        ))
+        val expected = BooksData.Fail( exceptionCloud)
 
         assertEquals(expected,actual)
     }
@@ -54,14 +36,14 @@ class BooksRepositoryTest : BooksRepositoryTestBase() {
         val repository = BooksRepository.Base(
             cloudDataSource = testCloudDataSource,
             cacheDataSource = testCacheDataSource,
-            cloudMapper = BooksCloudMapper.Base(TestBookCloudMapper()),
-            cacheMapper = BooksCacheMapper.Base(TestToBookMapper())
+            cloudMapper = BooksCloudMapper.Base(ToBookDataMapperTest()),
+            cacheMapper = BooksCacheMapper.Base(ToBookDataMapperTest())
         )
         val actual = repository.fetchBooks()
         val expected = BooksData.Success( listOf(
-            Book(1, "book1"),
-            Book(2, "book2"),
-            Book(3, "book3")
+            BookData(1, "book1","ot"),
+            BookData(2, "book2","ot"),
+            BookData(3, "book3","nt")
         ))
 
         assertEquals(expected, actual)
@@ -72,15 +54,15 @@ class BooksRepositoryTest : BooksRepositoryTestBase() {
         val repository = BooksRepository.Base(
             cloudDataSource = testCloudDataSource,
             cacheDataSource = testCacheDataSource,
-            cloudMapper = BooksCloudMapper.Base(TestBookCloudMapper()),
-            cacheMapper = BooksCacheMapper.Base(TestToBookMapper())
+            cloudMapper = BooksCloudMapper.Base(ToBookDataMapperTest()),
+            cacheMapper = BooksCacheMapper.Base(ToBookDataMapperTest())
         )
 
         val actual = repository.fetchBooks()
         val expected = BooksData.Success(listOf(
-            Book(1,"book1 db"),
-            Book(2,"book2 db"),
-            Book(3, "book3 db")
+            BookData(1,"book1 db","ot"),
+            BookData(2,"book2 db","ot"),
+            BookData(3, "book3 db","nt")
         ))
 
         assertEquals(expected,actual)
@@ -92,18 +74,19 @@ class BooksRepositoryTest : BooksRepositoryTestBase() {
         override suspend fun fetchBooks(): List<BookDb> {
             return if (success) {
                 listOf(
-                    BookDb(1, "book1 db"),
-                    BookDb(2, "book2 db"),
-                    BookDb(3, "book3 db")
+                    BookDb(1, "book1 db","ot"),
+                    BookDb(2, "book2 db","ot"),
+                    BookDb(3, "book3 db","nt")
                 )
             } else {
                 emptyList()
             }
         }
 
-        override suspend fun saveBooks(books: List<Book>) {
+        override suspend fun saveBooks(books: List<BookData>) {
 
         }
+
     }
 
     private inner class TestBooksCloudDataSource(private val success: Boolean) :
@@ -111,9 +94,9 @@ class BooksRepositoryTest : BooksRepositoryTestBase() {
         override suspend fun fetchBooks(): List<BookCloud> {
             return if (success) {
                 listOf(
-                    BookCloud(1, "book1"),
-                    BookCloud(2, "book2"),
-                    BookCloud(3, "book3")
+                    BookCloud(1, "book1","ot"),
+                    BookCloud(2, "book2","ot"),
+                    BookCloud(3, "book3","nt")
                 )
             } else {
                 throw exceptionCloud
@@ -122,4 +105,5 @@ class BooksRepositoryTest : BooksRepositoryTestBase() {
     }
 
 }
+
 

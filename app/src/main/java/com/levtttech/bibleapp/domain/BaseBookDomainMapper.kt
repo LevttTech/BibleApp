@@ -6,6 +6,5 @@ class BaseBookDomainMapper : BookDomainMapper {
     override fun map(
         id: Int,
         name: String,
-        testament: String,
     ): BookDomain = BookDomain.Base(id, name)
 }

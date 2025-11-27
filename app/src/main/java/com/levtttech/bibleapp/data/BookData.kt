@@ -7,7 +7,7 @@ import com.levtttech.bibleapp.domain.BookDomain
 
 data class BookData(private val id: Int, private val name: String, private val testament: String) :
     Abstract.Object<BookDomain, BookDomainMapper>(), DbMapper<BookDb, ToDbMapper> {
-    override fun map(mapper: BookDomainMapper): BookDomain = mapper.map(id, name, testament)
+    override fun map(mapper: BookDomainMapper): BookDomain = mapper.map(id, name)
     override fun mapToDb(mapper: ToDbMapper): BookDb = mapper.map(id, name, testament)
 
     fun compareTestament(testamentWrapper: TestamentWrapper) = testamentWrapper.matches(testament)
