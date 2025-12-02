@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/textView"
-    tools:text="Genesis"
-    android:padding ="@dimen/padding8"
-    android:textAppearance="@style/TextAppearance.AppCompat.Title"
-    android:gravity="end"
-    android:background="@android:color/holo_purple"
-    android:textColor="@color/white"
+    android:id = "@+id/testamentView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:padding ="@dimen/padding8"
+        tools:text="Genesis"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:gravity="end"
+        android:background="@android:color/holo_purple"
+        android:textColor="@color/white"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_purple"
+        android:contentDescription="null"
+        tools:src="@drawable/arrow_drop_down_24px"/>
+</LinearLayout>

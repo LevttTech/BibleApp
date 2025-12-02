@@ -11,7 +11,7 @@ class BaseBooksDomainToUiMapper(
     private val bookDomainToUiMapper: BookDomainToUiMapper,
 ) : BooksDomainToUiMapper {
     override fun map(books: List<BookDomain>): BooksUi =
-        BooksUi.Base(books.map {it.map(bookDomainToUiMapper)})
+        BooksUi.Base(books.map { it.map(bookDomainToUiMapper) })
 
     override fun map(errorType: ErrorType): BooksUi {
         val message = when (errorType) {

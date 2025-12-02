@@ -8,13 +8,17 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.levtttech.bibleapp.core.BibleApp
 import com.levtttech.bibleapp.presentation.BibleAdapter
+import com.levtttech.bibleapp.presentation.CollapseListener
+import com.levtttech.bibleapp.presentation.MainViewModel
 import com.levtttech.bibleapp.presentation.Retry
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var viewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val viewModel = (application as BibleApp).mainViewModel
+
+        viewModel = (application as BibleApp).mainViewModel
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.recyclerView)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -26,12 +30,22 @@ class MainActivity : AppCompatActivity() {
             override fun clickButton() {
                 viewModel.fetchBooks()
             }
+        }, object : CollapseListener {
+            override fun collapse(id: Int) {
+                viewModel.collapseOrExpand(id)
+            }
         })
         recyclerView.adapter = adapter
         viewModel.observer(this) { books ->
             adapter.update(books)
         }
 
-        viewModel.fetchBooks()
+        if (savedInstanceState == null) viewModel.fetchBooks()
     }
+
+    override fun onPause() {
+        viewModel.saveCollapsedState()
+        super.onPause()
+    }
+
 }

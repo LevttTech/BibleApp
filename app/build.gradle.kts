@@ -48,7 +48,7 @@ dependencies {
     implementation("androidx.room:room-runtime:$room_version")
     ksp("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0") // Use the latest stable version
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

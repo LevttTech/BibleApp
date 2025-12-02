@@ -21,6 +21,7 @@ import com.levtttech.bibleapp.presentation.BaseBooksDomainToUiMapper
 import com.levtttech.bibleapp.presentation.BooksCommunication
 import com.levtttech.bibleapp.presentation.MainViewModel
 import com.levtttech.bibleapp.presentation.ResourceProvider
+import com.levtttech.bibleapp.presentation.UiDataCache
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -59,7 +60,7 @@ class BibleApp : Application() {
             booksInteractor, BaseBooksDomainToUiMapper(
                 resourceProvider,
                 BaseBookDomainToUiMapper(resourceProvider),
-            ), communication
+            ), communication, UiDataCache.Base(cacheId = UiDataCache.CacheId.Base(applicationContext))
         )
     }
 
