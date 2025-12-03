@@ -9,7 +9,7 @@ import com.levtttech.bibleapp.data.ToBookDataMapper
 import com.levtttech.bibleapp.data.cache.BooksCacheDataSource
 import com.levtttech.bibleapp.data.cache.BooksCacheMapper
 import com.levtttech.bibleapp.data.cache.BooksDatabase
-import com.levtttech.bibleapp.data.cache.RoomProvider
+import com.levtttech.bibleapp.data.RoomProvider
 import com.levtttech.bibleapp.data.cache.ToDbMapper
 import com.levtttech.bibleapp.data.net.BookService
 import com.levtttech.bibleapp.domain.BaseBooksDataToDomainMapper
