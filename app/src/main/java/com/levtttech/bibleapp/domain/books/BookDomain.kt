@@ -1,0 +1,24 @@
+package com.levtttech.bibleapp.domain.books
+
+import com.levtttech.bibleapp.core.Abstract
+import com.levtttech.bibleapp.presentation.books.BookUi
+
+sealed class BookDomain : Abstract.Object<BookUi, BookDomainToUiMapper> {
+    data class Base(
+        private val id: Int,
+        private val name: String,
+    ) : BookDomain() {
+        override fun map(mapper: BookDomainToUiMapper): BookUi = mapper.map(id, name)
+    }
+
+    data class Testament(private val type: TestamentType) : BookDomain(),
+        TestamentMapper<Testament, TestamentTypeMapper> {
+        override fun map(mapper: BookDomainToUiMapper): BookUi = mapper.map(type.getId(), type.name)
+        override fun mapTestament(mapper: TestamentTypeMapper): Testament = mapper.map(type)
+
+    }
+}
+
+interface TestamentMapper<T, M : Abstract.Mapper> {
+    fun mapTestament(mapper: M): T
+}

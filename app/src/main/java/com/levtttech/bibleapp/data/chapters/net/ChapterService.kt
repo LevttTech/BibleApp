@@ -6,7 +6,7 @@ import retrofit2.http.Path
 interface ChapterService {
 
     @GET("books/{id}/chapters")
-    fun fetchChapters(
+    suspend fun fetchChapters(
         @Path("id") id: Int
     ) : List<ChapterCloud>
 }

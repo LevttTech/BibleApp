@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <TextView
+    <com.levtttech.bibleapp.core.CustomTextView
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_weight="1"
@@ -19,7 +19,7 @@
         android:background="@android:color/holo_purple"
         android:textColor="@color/white"/>
 
-    <ImageView
+    <com.levtttech.bibleapp.core.CustomCollapseView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

@@ -1,14 +1,14 @@
 package com.levtttech.bibleapp.presentation
 
-import com.levtttech.bibleapp.data.BookData
-import com.levtttech.bibleapp.data.BookDomainMapper
-import com.levtttech.bibleapp.domain.BaseBooksDataToDomainMapper
-import com.levtttech.bibleapp.domain.BookDomain
-import com.levtttech.bibleapp.domain.BookDomain.Base
-import com.levtttech.bibleapp.domain.BookDomain.Testament
-import com.levtttech.bibleapp.domain.BooksDomain
-import com.levtttech.bibleapp.domain.TestamentType
-import com.levtttech.bibleapp.domain.TestamentTypeMapper
+import com.levtttech.bibleapp.data.books.BookData
+import com.levtttech.bibleapp.data.books.BookDomainMapper
+import com.levtttech.bibleapp.domain.books.BaseBooksDataToDomainMapper
+import com.levtttech.bibleapp.domain.books.BookDomain
+import com.levtttech.bibleapp.domain.books.BookDomain.Base
+import com.levtttech.bibleapp.domain.books.BookDomain.Testament
+import com.levtttech.bibleapp.domain.books.BooksDomain
+import com.levtttech.bibleapp.domain.books.TestamentType
+import com.levtttech.bibleapp.domain.books.TestamentTypeMapper
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test

@@ -6,12 +6,10 @@ import androidx.room.Query
 
 @Dao
 interface ChapterDao {
-
-
     @Insert
-    fun saveChapters(chapters: List<ChapterDb>)
+    suspend fun saveChapters(chapters: List<ChapterDb>)
 
-    @Query("SELECT * FROM chapters")
-    fun fetchChapters(): List<ChapterDb>
+    @Query("SELECT * FROM chapters WHERE book_id = :bookId")
+    suspend fun fetchChapters(bookId: Int): List<ChapterDb>
 
 }

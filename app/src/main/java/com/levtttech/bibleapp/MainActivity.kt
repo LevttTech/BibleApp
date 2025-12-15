@@ -1,51 +1,41 @@
 package com.levtttech.bibleapp
 
 import android.os.Bundle
+import android.window.OnBackInvokedDispatcher
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.RecyclerView
 import com.levtttech.bibleapp.core.BibleApp
-import com.levtttech.bibleapp.presentation.BibleAdapter
-import com.levtttech.bibleapp.presentation.CollapseListener
-import com.levtttech.bibleapp.presentation.MainViewModel
-import com.levtttech.bibleapp.presentation.Retry
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         viewModel = (application as BibleApp).mainViewModel
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.recyclerView)) { v, insets ->
+        viewModel.init()
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.container)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val adapter = BibleAdapter(object : Retry {
-            override fun clickButton() {
-                viewModel.fetchBooks()
-            }
-        }, object : CollapseListener {
-            override fun collapse(id: Int) {
-                viewModel.collapseOrExpand(id)
-            }
-        })
-        recyclerView.adapter = adapter
-        viewModel.observer(this) { books ->
-            adapter.update(books)
+        viewModel.observeScreen(this) { screen ->
+            val fragment = viewModel.getFragment(screen)
+
+            supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
+        }
+    }
+
+    override fun getOnBackInvokedDispatcher(): OnBackInvokedDispatcher {
+        onBackPressedDispatcher.addCallback(this) {
+            if (!viewModel.navigateBack()) finish()
         }
 
-        if (savedInstanceState == null) viewModel.fetchBooks()
+        return super.getOnBackInvokedDispatcher()
     }
-
-    override fun onPause() {
-        viewModel.saveCollapsedState()
-        super.onPause()
-    }
-
 }

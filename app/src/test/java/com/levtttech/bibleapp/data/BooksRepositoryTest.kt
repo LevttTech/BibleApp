@@ -1,11 +1,15 @@
 
 package com.levtttech.bibleapp.data
 
-import com.levtttech.bibleapp.data.cache.BookDb
-import com.levtttech.bibleapp.data.cache.BooksCacheDataSource
-import com.levtttech.bibleapp.data.cache.BooksCacheMapper
-import com.levtttech.bibleapp.data.cache.ToDbMapper
-import com.levtttech.bibleapp.data.net.BookCloud
+import com.levtttech.bibleapp.data.books.BookData
+import com.levtttech.bibleapp.data.books.BooksCloudDataSource
+import com.levtttech.bibleapp.data.books.BooksCloudMapper
+import com.levtttech.bibleapp.data.books.BooksData
+import com.levtttech.bibleapp.data.books.BooksRepository
+import com.levtttech.bibleapp.data.books.cache.BookDb
+import com.levtttech.bibleapp.data.books.cache.BooksCacheDataSource
+import com.levtttech.bibleapp.data.books.cache.BooksDataMapper
+import com.levtttech.bibleapp.data.books.net.BookCloud
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -22,7 +26,7 @@ class BooksRepositoryTest : BooksRepositoryTestBase() {
             cloudDataSource = testCloudDataSource,
             cacheDataSource = testCacheDataSource,
             cloudMapper = BooksCloudMapper.Base(ToBookDataMapperTest()),
-            cacheMapper = BooksCacheMapper.Base(ToBookDataMapperTest())
+            cacheMapper = BooksDataMapper.Base(ToBookDataMapperTest())
         )
         val actual = repository.fetchBooks()
         val expected = BooksData.Fail( exceptionCloud)
@@ -37,13 +41,13 @@ class BooksRepositoryTest : BooksRepositoryTestBase() {
             cloudDataSource = testCloudDataSource,
             cacheDataSource = testCacheDataSource,
             cloudMapper = BooksCloudMapper.Base(ToBookDataMapperTest()),
-            cacheMapper = BooksCacheMapper.Base(ToBookDataMapperTest())
+            cacheMapper = BooksDataMapper.Base(ToBookDataMapperTest())
         )
         val actual = repository.fetchBooks()
         val expected = BooksData.Success( listOf(
-            BookData(1, "book1","ot"),
-            BookData(2, "book2","ot"),
-            BookData(3, "book3","nt")
+            BookData(1, "book1", "ot"),
+            BookData(2, "book2", "ot"),
+            BookData(3, "book3", "nt")
         ))
 
         assertEquals(expected, actual)
@@ -55,14 +59,14 @@ class BooksRepositoryTest : BooksRepositoryTestBase() {
             cloudDataSource = testCloudDataSource,
             cacheDataSource = testCacheDataSource,
             cloudMapper = BooksCloudMapper.Base(ToBookDataMapperTest()),
-            cacheMapper = BooksCacheMapper.Base(ToBookDataMapperTest())
+            cacheMapper = BooksDataMapper.Base(ToBookDataMapperTest())
         )
 
         val actual = repository.fetchBooks()
         val expected = BooksData.Success(listOf(
-            BookData(1,"book1 db","ot"),
-            BookData(2,"book2 db","ot"),
-            BookData(3, "book3 db","nt")
+            BookData(1, "book1 db", "ot"),
+            BookData(2, "book2 db", "ot"),
+            BookData(3, "book3 db", "nt")
         ))
 
         assertEquals(expected,actual)

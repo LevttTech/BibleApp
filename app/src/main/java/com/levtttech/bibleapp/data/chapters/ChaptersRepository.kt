@@ -1,30 +1,30 @@
 package com.levtttech.bibleapp.data.chapters
 
+import android.util.Log
+import com.levtttech.bibleapp.core.Read
+import com.levtttech.bibleapp.data.chapters.cache.ChapterDb
 import com.levtttech.bibleapp.data.chapters.cache.ChaptersCacheDataSource
+import com.levtttech.bibleapp.data.chapters.cache.ChaptersCacheMapper
+import com.levtttech.bibleapp.data.chapters.net.ChapterCloud
+import com.levtttech.bibleapp.data.core.BaseRepository
+class ChaptersRepository(
+    private val cloudDataSource: ChaptersCloudDataSource,
+    private val cacheDataSource: ChaptersCacheDataSource,
+    cloudMapper: ChaptersCloudMapper,
+    cacheMapper: ChaptersCacheMapper,
+    private val idContainer: Read<Pair<Int,String>>
+) : BaseRepository<ChapterDb, ChapterCloud, ChapterData, ChaptersData>(
+    cloudMapper, cacheMapper
+) {
 
-interface ChaptersRepository {
 
-    fun fetchChapters(id: Int): ChaptersData
+    override suspend fun cachedList(): List<ChapterDb> = cacheDataSource.fetch(idContainer.read().first)
 
-    class Base(
-        private val cacheDataSource: ChaptersCacheDataSource,
-        private val cloudDataSource: ChaptersCloudDataSource,
-        private val cloudMapper: ChaptersCloudMapper,
-    ) : ChaptersRepository {
-        override fun fetchChapters(id: Int): ChaptersData {
-            return try {
-                val cacheChapters = cacheDataSource.fetchChapters()
-                if (cacheChapters.isEmpty()) {
-                    val cloudChapters = cloudDataSource.fetchChapters(id)
-                    val dataChapters = cloudMapper.map(cloudChapters)
-                    cacheDataSource.saveChapters(dataChapters)
-                    ChaptersData.Success(dataChapters)
-                } else {
-                    ChaptersData.Success(cacheChapters)
-                }
-            } catch (e: Exception) {
-                ChaptersData.Fail(e)
-            }
-        }
-    }
+    override suspend fun cloudList(): List<ChapterCloud> = cloudDataSource.fetchChapters(idContainer.read().first)
+
+    override suspend fun save(data: List<ChapterData>) = cacheDataSource.save(data)
+
+    override fun returnSuccess(data: List<ChapterData>) = ChaptersData.Success(data)
+
+    override fun returnFail(e: Exception) = ChaptersData.Fail(e)
 }
