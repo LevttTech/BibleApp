@@ -1,20 +1,14 @@
 package com.levtttech.bibleapp.presentation.books
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import androidx.lifecycle.ViewModelStoreOwner
 import com.levtttech.bibleapp.R
-import com.levtttech.bibleapp.core.BibleApp
 import com.levtttech.bibleapp.presentation.core.BaseFragment
 
-class BooksFragment : BaseFragment() {
+class BooksFragment : BaseFragment<BooksViewModel>() {
     override fun getTitle() = getString(R.string.app_name)
-
-    private lateinit var viewModel: BooksViewModel
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ((requireActivity().application) as BibleApp).booksViewModel
-    }
+    override fun getViewModelClass() = BooksViewModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,5 +35,15 @@ class BooksFragment : BaseFragment() {
     override fun onPause() {
         viewModel.saveCollapsedState()
         super.onPause()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("ViewModel", "onDestroyView() books")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("ViewModel", "onDestroy() books")
     }
 }

@@ -4,21 +4,23 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelStore
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.levtttech.bibleapp.R
 import com.levtttech.bibleapp.core.BibleApp
 import com.levtttech.bibleapp.presentation.books.Retry
 import com.levtttech.bibleapp.presentation.core.BaseFragment
 
-class ChaptersFragment : BaseFragment() {
-    private lateinit var viewModel: ChaptersViewModel
+class ChaptersFragment : BaseFragment<ChaptersViewModel>() {
+    override fun getViewModelClass() = ChaptersViewModel::class.java
+
     override fun getTitle() = viewModel.getBookName()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = (requireActivity().application as BibleApp).chaptersViewModel
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,4 +42,13 @@ class ChaptersFragment : BaseFragment() {
         viewModel.fetchChapters()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("ViewModel", "onDestroyView() chapters")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("ViewModel", "onDestroy() chapters")
+    }
 }

@@ -1,5 +1,6 @@
 package com.levtttech.bibleapp.presentation.books
 
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -21,7 +22,9 @@ class BooksViewModel(
     private val navigationCommunication: NavigationCommunication,
     private val navigator: BooksNavigator,
 ) : ViewModel() {
-
+    init {
+        Log.d("ViewModel","create booksViewModel hashcode=${hashCode()}")
+    }
     fun fetchBooks() {
         communication.map(listOf(BookUi.Progress))
         viewModelScope.launch(Dispatchers.IO) {

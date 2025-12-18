@@ -15,10 +15,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-        viewModel = (application as BibleApp).mainViewModel
+        viewModel = (application as BibleApp).getViewModel(MainViewModel::class.java, this)
         setContentView(R.layout.activity_main)
-        viewModel.init()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.container)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -26,9 +24,9 @@ class MainActivity : AppCompatActivity() {
         }
         viewModel.observeScreen(this) { screen ->
             val fragment = viewModel.getFragment(screen)
-
             supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
         }
+        if (savedInstanceState == null) viewModel.init()
     }
 
     override fun getOnBackInvokedDispatcher(): OnBackInvokedDispatcher {

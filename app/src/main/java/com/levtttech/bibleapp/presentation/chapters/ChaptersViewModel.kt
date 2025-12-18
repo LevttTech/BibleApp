@@ -1,5 +1,6 @@
 package com.levtttech.bibleapp.presentation.chapters
 
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -19,6 +20,9 @@ class ChaptersViewModel(
     private val bookCache: Read<Pair<Int, String>>
 ) : ViewModel() {
 
+    init {
+        Log.d("ViewModel", "chapters viewmodel create hashcode=${hashCode()}")
+    }
     fun init() {
         navigator.saveChaptersScreen()
     }
