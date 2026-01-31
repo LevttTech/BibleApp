@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.levtttech.holybibleapp.presentation.core.SwipeMenuLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRevealLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    app:ios="false">
+
+    <com.levtttech.holybibleapp.presentation.core.view.CustomFrameLayout
+        android:id="@+id/backgroundView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="@dimen/item_height"
+        android:background="@color/white">
+
+        <com.levtttech.holybibleapp.presentation.core.view.CustomTextView
+            android:id="@+id/textView"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/item_height"
+            android:paddingHorizontal="@dimen/padding8"
+            tools:text="Here is going to be a long text of a verse to be likely more than one line you know" />
+    </com.levtttech.holybibleapp.presentation.core.view.CustomFrameLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/shareLayout"
+            android:layout_width="@dimen/item_height"
+            android:layout_height="match_parent"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_gravity="center"
+                android:src="@drawable/ic_share_black_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="ContentDescription" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/changeFavoriteLayout"
+            android:layout_width="@dimen/item_height"
+            android:layout_height="match_parent"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <com.levtttech.holybibleapp.presentation.core.view.FavoriteView
+                android:id="@+id/changeFavoriteView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/ic_star_full_black_24" />
+
+        </FrameLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</com.levtttech.holybibleapp.presentation.core.SwipeMenuLayout>
